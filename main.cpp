@@ -33,6 +33,20 @@ int sobrevive(int x, int y){
 }
 void pantalla(){
 	glClear(GL_COLOR_BUFFER_BIT);
+	for(int i=0; i<NX; ++i){
+		for(int j=0; j<NY; ++j){			
+			glPointSize(PIXEL);
+			glColor3f(mat1[i][j], mat1[i][j], mat1[i][j]);
+			glBegin(GL_POINTS);
+			glVertex2f(i*PIXEL+PIXEL/2.0, j*PIXEL+PIXEL/2.0);
+			glEnd();
+		}
+	}
+	for(int i=0; i<NX; ++i){
+		for(int j=0; j<NY; ++j){
+			mat2[i][j] = sobrevive(i, j);		
+		}
+	}
 	glutSwapBuffers();
 }
 void inicio(){
@@ -76,3 +90,4 @@ int main (int argc, char **argv) {
 	glutMainLoop();
 	return 0;
 }
+
