@@ -9,45 +9,38 @@
 #define PROB 3
 #define NX  (XLIM/PIXEL)
 #define NY  (YLIM/PIXEL)
-int **mat1, **mat2;
+
+#define FRAMERATE 16
 using namespace std;
+int **mat1, **mat2;
+
+int sobrevive(int x, int y){
+	int i, j;
+	int aux = 0;
+	if(!x || !y || (x==NX-1) || (y== NY-1)){
+		return 0;
+	}
+	else{
+		for(i=x-1; i<=x+1; ++i){
+			for(j=y-1; j<=y+1; ++j){
+				aux+=mat1[i][j];		
+			}
+		}
+		aux-=mat1[x][y];
+		aux = (mat1[x][y]) ? ((aux == 2)||(aux == 3)) :(aux == 3);
+		return aux;
+	}
+}
 void pantalla(){
 	glClear(GL_COLOR_BUFFER_BIT);
 	glutSwapBuffers();
 }
-	void inicio(){
-		srand(time(NULL));
-		mat1 = new int*[NX];
-		mat2 = new int*[NX];
-		for(int i=0; i<NX; ++i){
-			mat1[i] = new int[NY];
-			mat2[i] = new int[NY];
-		}
-		for(int i=0; i<NX; ++i){
-			for(int j=0; j<NY; ++j){
-				mat1[i][j] = PROB>(int)(rand()%10);
-				mat2[i][j] = 0;
-			}
-		}
-		glMatrixMode(GL_PROJECTION);
-		gluOrtho2D(0, XLIM, 0, YLIM);           //Establece el sistema de coordenadas.
-		glClearColor(0.0, 0.0, 0.0, 0.0);   //Establece el color RGB de fondo.
+void inicio(){
+	srand(time(NULL));
+	mat1 = new int*[NX];
+	mat2 = new int*[NX];
+	for(int i=0; i<NX; ++i){
+		mat1[i] = new int[NY];
+		mat2[i] = new int[NY];
 	}
-		void swap(){
-			int **tmp;
-			tmp  = mat1;
-			mat1 = mat2;
-			mat2 = tmp;
-		}
-			int main (int argc, char **argv) {
-				glutInit(&argc, argv);
-				glutInitWindowSize(XLIM,YLIM);
-				glutInitWindowPosition(10,10);
-				glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE);
-				glutCreateWindow("Game Of Life");
-				inicio();
-				glutDisplayFunc(pantalla);
-				glutMainLoop();
-				return 0;
-			}
-			
+	for(int i=0; i<NX; ++i){
