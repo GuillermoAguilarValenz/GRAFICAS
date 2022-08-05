@@ -31,16 +31,64 @@ int sobrevive(int x, int y){
 		return aux;
 	}
 }
-void pantalla(){
-	glClear(GL_COLOR_BUFFER_BIT);
-	glutSwapBuffers();
-}
-void inicio(){
-	srand(time(NULL));
-	mat1 = new int*[NX];
-	mat2 = new int*[NX];
-	for(int i=0; i<NX; ++i){
-		mat1[i] = new int[NY];
-		mat2[i] = new int[NY];
+	void pantalla(){
+		glClear(GL_COLOR_BUFFER_BIT);
+		for(int i=0; i<NX; ++i){
+			for(int j=0; j<NY; ++j){			
+				glPointSize(PIXEL);
+				glColor3f(mat1[i][j], mat1[i][j], mat1[i][j]);
+				glBegin(GL_POINTS);
+				glVertex2f(i*PIXEL+PIXEL/2.0, j*PIXEL+PIXEL/2.0);
+				glEnd();
+			}
+		}
+		for(int i=0; i<NX; ++i){
+			for(int j=0; j<NY; ++j){
+				mat2[i][j] = sobrevive(i, j);		
+			}
+		}
+		glutSwapBuffers();
 	}
-	for(int i=0; i<NX; ++i){
+		void inicio(){
+			srand(time(NULL));
+			mat1 = new int*[NX];
+			mat2 = new int*[NX];
+			for(int i=0; i<NX; ++i){
+				mat1[i] = new int[NY];
+				mat2[i] = new int[NY];
+			}
+			for(int i=0; i<NX; ++i){
+				for(int j=0; j<NY; ++j){
+					mat1[i][j] = PROB>(int)(rand()%10);
+					mat2[i][j] = 0;
+				}
+			}
+			glMatrixMode(GL_PROJECTION);
+			gluOrtho2D(0, XLIM, 0, YLIM);           //Establece el sistema de coordenadas.
+			glClearColor(0.0, 0.0, 0.0, 0.0);   //Establece el color RGB de fondo.
+		}
+			void swap(){
+				int **tmp;
+				tmp  = mat1;
+				mat1 = mat2;
+				mat2 = tmp;
+			}
+				void timer(int){
+					pantalla();
+					swap();
+					glutTimerFunc(FRAMERATE, timer, 0);
+				}
+					int main (int argc, char **argv) {
+						glutInit(&argc, argv);
+						glutInitWindowSize(XLIM,YLIM);
+						glutInitWindowPosition(10,10);
+						glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE);
+						glutCreateWindow("Game Of Life");
+						inicio();
+						glutDisplayFunc(pantalla);
+						timer(0);
+						glutMainLoop();
+						return 0;
+					}
+					
+					
