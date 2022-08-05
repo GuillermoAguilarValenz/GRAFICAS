@@ -33,15 +33,21 @@ void pantalla(){
 		gluOrtho2D(0, XLIM, 0, YLIM);           //Establece el sistema de coordenadas.
 		glClearColor(0.0, 0.0, 0.0, 0.0);   //Establece el color RGB de fondo.
 	}
-		int main (int argc, char **argv) {
-			glutInit(&argc, argv);
-			glutInitWindowSize(XLIM,YLIM);
-			glutInitWindowPosition(10,10);
-			glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE);
-			glutCreateWindow("Game Of Life");
-			inicio();
-			glutDisplayFunc(pantalla);
-			glutMainLoop();
-			return 0;
+		void swap(){
+			int **tmp;
+			tmp  = mat1;
+			mat1 = mat2;
+			mat2 = tmp;
 		}
-		
+			int main (int argc, char **argv) {
+				glutInit(&argc, argv);
+				glutInitWindowSize(XLIM,YLIM);
+				glutInitWindowPosition(10,10);
+				glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE);
+				glutCreateWindow("Game Of Life");
+				inicio();
+				glutDisplayFunc(pantalla);
+				glutMainLoop();
+				return 0;
+			}
+			
