@@ -1,3 +1,4 @@
+
 #include <iostream>
 #include <GL/glut.h> 
 #include <windows.h>
@@ -19,5 +20,6 @@ int main (int argc, char **argv) {
 	glutCreateWindow("Game Of Life");
 	glutDisplayFunc(pantalla);
 	glutMainLoop();
+
 	return 0;
 }
